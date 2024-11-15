@@ -43,14 +43,14 @@
 - [x] `st pp` 구현
 - [x] `st feat` 구현
 
-## Phase 4: Testing & Documentation
+## Phase 4: Testing & Documentation ✅
 
 - [x] 단위 테스트 작성
 - [x] ~~통합 테스트 작성~~ (수동 테스트로 대체)
 - [x] ~~API 문서 작성~~ (불필요)
-- [ ] 사용자 가이드 작성
+- [x] 사용자 가이드 작성
 
-## Phase 5: Publishing Setup
+## Phase 5: Publishing Setup ✅
 
 - [x] NPM 패키지 설정
 
@@ -58,29 +58,29 @@
     - [x] bin 필드 설정
     - [x] files 필드 설정
     - [x] engines 필드 설정
-  - [ ] .npmignore 작성
+  - [x] .npmignore 작성
   - [x] README.md 업데이트
 
 - [x] 로컬 테스트 환경 구성
 
   - [x] npm link 스크립트 작성
   - [x] 개발용 환경변수 설정
-  - [ ] 버전 관리 스크립트 작성
+  - [x] 버전 관리 스크립트 작성
 
-- [ ] CI/CD 파이프라인 구성
-  - [ ] GitHub Actions 워크플로우 작성
-    - [ ] 테스트 자동화
-    - [ ] 버전 태깅
-    - [ ] NPM 배포
-  - [ ] semantic-release 설정
+- [x] CI/CD 파이프라인 구성
+  - [x] GitHub Actions 워크플로우 작성
+    - [x] 테스트 자동화
+    - [x] 버전 태깅
+    - [x] NPM 배포
+  - [x] ~~semantic-release 설정~~ (npm version 스크립트로 대체)
 
-## Phase 6: Documentation
+## Phase 6: Documentation ✅
 
 - [x] 개발 가이드 작성
   - [x] 로컬 개발 환경 설정 가이드
   - [x] npm link 사용 방법
-  - [ ] 테스트 실행 방법
-- [ ] 배포 프로세스 문서화
-  - [ ] 버전 관리 정책
-  - [ ] 배포 체크리스트
-  - [ ] 릴리즈 노트 작성 가이드
+  - [x] 테스트 실행 방법
+- [x] 배포 프로세스 문서화
+  - [x] 버전 관리 정책
+  - [x] 배포 체크리스트
+  - [x] 릴리즈 노트 작성 가이드
