@@ -215,4 +215,50 @@ st feat add-user-auth
    Generate token at [GitHub Settings](https://github.com/settings/tokens)
    Required scope: `repo`
 
+## Deployment
+
+### Prerequisites
+
+1. NPM 계정 및 권한
+
+   - @odcode organization의 멤버여야 함
+   - Automation token 필요 (2FA 지원)
+
+2. GitHub 설정
+   - `NPM_TOKEN`: NPM Automation token
+   - `GITHUB_TOKEN`: GitHub Personal Access Token (자동 생성됨)
+
+### Release Process
+
+1. 버전 업데이트 (main 브랜치에서)
+
+```bash
+# Patch version update (0.0.x)
+pnpm run version:patch
+
+# Minor version update (0.x.0)
+pnpm run version:minor
+
+# Major version update (x.0.0)
+pnpm run version:major
+```
+
+2. 자동 배포
+
+   - 버전 태그가 생성되면 GitHub Actions가 자동으로:
+     1. 테스트 실행
+     2. 빌드
+     3. NPM 배포
+     4. GitHub Release 생성
+
+3. 배포 확인
+
+```bash
+# 패키지 정보 확인
+npm view @odcode/stitch
+
+# 최신 버전 설치
+npm install -g @odcode/stitch@latest
+```
+
 ---
