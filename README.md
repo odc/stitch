@@ -43,9 +43,9 @@ TODO
 ## Installation
 
 ```bash
-npm install -g stitch-cli
+npm install -g @odc/stitch
 # or
-yarn global add stitch-cli
+yarn global add @odc/stitch
 ```
 
 ## Why 'Stitch'?
@@ -82,5 +82,55 @@ Contributions are welcome!
 ## License
 
 MIT
+
+## Development
+
+### Prerequisites
+
+- Node.js >= 20.0.0
+- pnpm >= 8.0.0
+
+### Local Development Setup
+
+1. pnpm global directory 설정 (처음 한 번만)
+
+```bash
+# pnpm 글로벌 디렉토리 생성
+mkdir -p ~/pnpm-global
+
+# pnpm 글로벌 경로 설정
+pnpm config set global-dir ~/pnpm-global
+pnpm config set global-bin-dir ~/pnpm-global/bin
+
+# PATH 설정 추가 (~/.zshrc 또는 ~/.bashrc)
+echo 'export PNPM_HOME="$HOME/pnpm-global/bin"' >> ~/.zshrc
+echo 'export PATH="$PNPM_HOME:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+2. 프로젝트 설정
+
+```bash
+# 의존성 설치
+pnpm install
+
+# 개발 모드 실행
+pnpm dev
+
+# 글로벌로 심볼릭 링크 설정
+pnpm build
+pnpm link --global
+
+# 테스트
+st hello
+```
+
+### Available Scripts
+
+- `pnpm build`: Build the project
+- `pnpm dev`: Run in development mode with watch
+- `pnpm test`: Run tests
+- `pnpm lint`: Run linter
+- `pnpm format`: Format code
 
 ---
