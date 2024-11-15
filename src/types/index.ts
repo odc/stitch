@@ -1,9 +1,9 @@
 export interface CommandOptions {
-  debug?: boolean;
+  debug?: boolean
 }
 
 export interface GitContext {
-  branch: string;
-  repository: string;
-  changes: string[];
+  branch: string
+  repository: string
+  changes: string[]
 }

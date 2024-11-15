@@ -43,9 +43,11 @@ TODO
 ## Installation
 
 ```bash
-npm install -g @odc/stitch
+npm install -g @odcode/stitch
 # or
-yarn global add @odc/stitch
+yarn global add @odcode/stitch
+# or
+pnpm add -g @odcode/stitch
 ```
 
 ## Why 'Stitch'?
@@ -77,7 +79,9 @@ The name represents our core philosophy:
 
 ## Contributing
 
-Contributions are welcome!
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+GitHub Repository: [github.com/odc/stitch](https://github.com/odc/stitch)
 
 ## License
 
@@ -132,5 +136,83 @@ st hello
 - `pnpm test`: Run tests
 - `pnpm lint`: Run linter
 - `pnpm format`: Format code
+
+## Usage
+
+### `st pr` - Create PR with AI-generated summary
+
+Creates a pull request with an AI-generated description based on your commit messages.
+
+```bash
+st pr
+```
+
+Requirements:
+
+- Clean working directory (commit or stash changes)
+- ANTHROPIC_API_KEY environment variable
+- GITHUB_TOKEN environment variable (optional, for automatic PR creation)
+
+### `st pp` - Pull & Prune
+
+Updates your local repository and cleans up merged branches.
+
+```bash
+st pp
+```
+
+Features:
+
+- Switches to main branch
+- Updates all branches from remote
+- Deletes local branches that are already merged
+- Preserves branches listed in .ppignore
+
+Example .ppignore:
+
+```
+# Protect branches matching these patterns
+release/*
+hotfix/*
+```
+
+### `st feat` - Create feature branch
+
+Creates a new feature branch with standardized naming.
+
+```bash
+st feat <name>
+```
+
+Requirements:
+
+- Must be on main branch
+- Name can only contain letters, numbers, hyphens, and underscores
+
+Example:
+
+```bash
+st feat add-user-auth
+# Creates and switches to feat/add-user-auth
+```
+
+## Environment Setup
+
+### Required Environment Variables
+
+1. ANTHROPIC_API_KEY (Required for PR generation)
+
+   ```bash
+   export ANTHROPIC_API_KEY="your-api-key"
+   ```
+
+   Get your API key from [Claude Console](https://console.anthropic.com/)
+
+2. GITHUB_TOKEN (Optional, for automatic PR creation)
+   ```bash
+   export GITHUB_TOKEN="your-github-token"
+   ```
+   Generate token at [GitHub Settings](https://github.com/settings/tokens)
+   Required scope: `repo`
 
 ---

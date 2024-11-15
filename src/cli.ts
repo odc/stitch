@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 
-import { Command } from "commander";
+import { Command } from 'commander'
+import { registerPrCommand } from './commands/pr'
+import { registerPpCommand } from './commands/pp'
+import { registerFeatCommand } from './commands/feat'
 
-const program = new Command();
-
-program
-  .name("st")
-  .description("Stitch CLI - Seamlessly connecting development workflow gaps")
-  .version("0.1.0");
+const program = new Command()
 
 program
-  .command("hello")
-  .description("Test command")
-  .action(() => {
-    console.log("Hello from Stitch CLI!");
-  });
+  .name('st')
+  .description('Stitch CLI - Seamlessly connecting development workflow gaps')
+  .version('0.1.0')
 
-program.parse();
+registerPrCommand(program)
+registerPpCommand(program)
+registerFeatCommand(program)
+
+program.parse()
