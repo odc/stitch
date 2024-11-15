@@ -1,0 +1,38 @@
+# Source
+src/
+tests/
+**/__tests__/
+
+# Config files
+.eslintrc.json
+.prettierrc
+.editorconfig
+tsconfig.json
+tsup.config.ts
+jest.config.js
+
+# Development files
+.husky/
+.github/
+coverage/
+.env*
+*.log
+.DS_Store
+
+# Documentation
+docs/
+instructions/
+CONTRIBUTING.md
+
+# Git
+.git/
+.gitignore
+.ppignore
+
+# IDE
+.vscode/
+.idea/
+
+# Build process
+node_modules/
+pnpm-lock.yaml
