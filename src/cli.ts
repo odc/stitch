@@ -11,7 +11,7 @@ const program = new Command()
 program
   .name('st')
   .description('Stitch CLI - Knowledge Base Synchronization Tool')
-  .version('0.1.5')
+  .version(require('../package.json').version)
 
 registerPrCommand(program)
 registerPpCommand(program)
