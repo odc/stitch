@@ -12,11 +12,13 @@
 
 ### 1. 프로젝트 기본 맥락 분석
 
-- 본 프로젝트의 핵심 스택
-{{tech_stacks}}
-  - {{name}}:{{version}}
-    가이드라인 문서 위치: {{guideline_path}}
-{{/tech_stacks}}
+{{#categories}}
+#### {{name}}
+{{#components}}
+- {{name}}
+  가이드라인 문서 위치: {{relative_path}}
+{{/components}}
+{{/categories}}
 
 ### 2. 피처 디렉토리 생성
 

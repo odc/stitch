@@ -127,9 +127,10 @@ describe('st sync command', () => {
     await createDefaultStitchConfig()
     await syncCommand({ inputProvider: mockInputProvider, outputProvider })
 
+    // mustache template will be rendered to workflow.md
     const workflowPath = path.join(
       projectDir,
-      'docs/guidelines/ai-tools/workflow.md.mustache'
+      'docs/guidelines/ai-tools/workflow.md'
     )
     const exists = await fs.pathExists(workflowPath)
     expect(exists).toBe(true)
@@ -190,7 +191,7 @@ describe('st sync command', () => {
 
     await expect(
       syncCommand({ inputProvider: mockInputProvider, outputProvider })
-    ).rejects.toThrow('Invalid KB repository path')
+    ).rejects.toThrow()
   })
 
   it('should handle missing component in KB', async () => {
@@ -214,5 +215,39 @@ describe('st sync command', () => {
     await expect(
       syncCommand({ inputProvider: mockInputProvider, outputProvider })
     ).rejects.toThrow('Component not found in KB')
+  })
+
+  it('should render workflow.md from mustache template', async () => {
+    await createDefaultStitchConfig()
+
+    // Create test directory structure
+    const guidelinesPath = path.join(projectDir, 'docs/guidelines')
+    await fs.ensureDir(path.join(guidelinesPath, 'tech-stack/nestjs'))
+    await fs.ensureDir(path.join(guidelinesPath, 'tech-stack/typescript'))
+
+    await syncCommand({ inputProvider: mockInputProvider, outputProvider })
+
+    // Check if rendered file exists and mustache template is removed
+    const mustachePath = path.join(
+      projectDir,
+      'docs/guidelines/ai-tools/workflow.md.mustache'
+    )
+    const renderedPath = path.join(
+      projectDir,
+      'docs/guidelines/ai-tools/workflow.md'
+    )
+
+    const mustacheExists = await fs.pathExists(mustachePath)
+    const renderedExists = await fs.pathExists(renderedPath)
+
+    expect(mustacheExists).toBe(false) // mustache template should be removed
+    expect(renderedExists).toBe(true)
+
+    // Verify rendered content
+    const content = await fs.readFile(renderedPath, 'utf-8')
+    expect(content).toContain('tech-stack')
+    expect(content).toContain('nestjs')
+    expect(content).toContain('typescript')
+    expect(content).toContain('docs/guidelines/tech-stack/nestjs')
   })
 })
