@@ -15,7 +15,7 @@ export interface VariationMetadata {
 export interface KBComponent {
   category: string
   name: string
-  variation?: string
+  variation: string
   current_version: string
   checked_version: string
 }
