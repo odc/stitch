@@ -1,19 +1,20 @@
 #!/usr/bin/env node
-
 import { Command } from 'commander'
-import { registerPrCommand } from './commands/pr'
-import { registerPpCommand } from './commands/pp'
 import { registerFeatCommand } from './commands/feat'
+import { registerInitCommand } from './commands/init'
+import { registerPpCommand } from './commands/pp'
+import { registerPrCommand } from './commands/pr'
 
 const program = new Command()
 
 program
   .name('st')
-  .description('Stitch CLI - Seamlessly connecting development workflow gaps')
-  .version('0.1.0')
+  .description('Stitch CLI - Knowledge Base Synchronization Tool')
+  .version('0.1.5')
 
 registerPrCommand(program)
 registerPpCommand(program)
 registerFeatCommand(program)
+registerInitCommand(program)
 
 program.parse()

@@ -9,4 +9,9 @@ export default defineConfig({
   sourcemap: true,
   minify: true,
   shims: true,
+  noExternal: ['inquirer'],
+  banner: {
+    js: `import { createRequire } from 'module';
+const require = createRequire(import.meta.url);`,
+  },
 })
