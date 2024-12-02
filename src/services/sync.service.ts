@@ -96,8 +96,9 @@ export class SyncService {
         process.cwd(),
         'docs/guidelines',
         component.category,
-        component.name,
-        component.variation
+        component.name
+        // variation is not included in targetPath
+        // component.variation
       )
 
       const exists = await fs.pathExists(sourcePath)

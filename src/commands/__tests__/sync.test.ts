@@ -103,7 +103,7 @@ describe('st sync command', () => {
     // Verify that the component was copied
     const componentPath = path.join(
       projectDir,
-      'docs/guidelines/tech-stack/nestjs/default'
+      'docs/guidelines/tech-stack/nestjs' // no variation path.
     )
     const exists = await fs.pathExists(componentPath)
     expect(exists).toBe(true)
@@ -165,11 +165,11 @@ describe('st sync command', () => {
     // Verify both components were copied
     const nestjsPath = path.join(
       projectDir,
-      'docs/guidelines/tech-stack/nestjs/default'
+      'docs/guidelines/tech-stack/nestjs'
     )
     const typescriptPath = path.join(
       projectDir,
-      'docs/guidelines/tech-stack/typescript/default'
+      'docs/guidelines/tech-stack/typescript'
     )
 
     const nestjsExists = await fs.pathExists(nestjsPath)
