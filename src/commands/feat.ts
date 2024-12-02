@@ -1,6 +1,7 @@
 import { execSync } from 'child_process'
 import { Command } from 'commander'
 import fs from 'fs-extra'
+import Mustache from 'mustache'
 import * as path from 'path'
 import { execSyncSafe, getCurrentBranch } from '../utils/git'
 
@@ -70,10 +71,30 @@ async function copyTemplateFiles(featName: string): Promise<void> {
   const featureTemplateDir = path.join(dir, 'docs/templates/feature')
   const targetDir = path.join(dir, 'docs/features', featName)
 
-  // copy featureTemplateDir to targetDir
-  await fs.copy(featureTemplateDir, targetDir, { overwrite: false })
+  // copy featureTemplateDir to targetDir except prompt.md
+  console.log(`Copying feature template files to ${targetDir}`)
+  await fs.ensureDir(targetDir)
+  await fs.copy(featureTemplateDir, targetDir, {
+    filter: (src) => !src.endsWith('prompt.md'),
+    overwrite: false,
+  })
 
-  console.log(`Copied feature template files to ${targetDir}`)
-  const promptFile = path.join(targetDir, 'prompt.md')
-  console.log(`✨ Modify ${promptFile} and start hacking!`)
+  console.log(`Creating prompt.md for ${featName}`)
+  const promptTemplate = path.join(featureTemplateDir, 'prompt.md')
+  const promptExists = await fs.pathExists(promptTemplate)
+
+  if (!promptExists) {
+    console.log(
+      '❌ prompt.md not found in feature template directory. Ignoring..'
+    )
+  } else {
+    const context = {
+      feature_name: featName,
+    }
+    const contents = await fs.readFile(promptTemplate, 'utf-8')
+    const rendered = Mustache.render(contents, context)
+    const promptFile = path.join(targetDir, 'prompt.md')
+    await fs.writeFile(promptFile, rendered)
+    console.log(`✨ Modify ${promptFile} and start hacking!`)
+  }
 }
