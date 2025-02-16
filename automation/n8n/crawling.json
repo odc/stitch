@@ -1,0 +1,614 @@
+{
+  "name": "경제 유튜브 채널 크롤링 봇",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-340, -360],
+      "id": "03bae295-e644-4c8f-823c-f7713425da95",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-340, -160],
+      "id": "0ed8127e-e37c-4fe0-ae10-a8a9ccd2b280",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1803aac-31d5-43f2-9cc7-3450fc9b0f7a",
+              "name": "automation_name",
+              "value": "경제 유튜브 동영상 업데이트 봇",
+              "type": "string"
+            },
+            {
+              "id": "12168b55-a150-4d89-a4d0-cd84f553abaf",
+              "name": "workflow_link",
+              "value": "https://a.odcode.com/workflow/TSO4pfIU7omZSP5E",
+              "type": "string"
+            },
+            {
+              "id": "10b5b918-b119-4496-870a-8d1482e3a137",
+              "name": "notion_page_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "55e503cb-071a-4452-81cf-20a6d6d1b920",
+              "name": "channel_name",
+              "value": "={{ $json.properties.channel_name.rich_text[0].text.content }}",
+              "type": "string"
+            },
+            {
+              "id": "d18cca13-8a6d-426f-b7a1-5dfe46b5b69d",
+              "name": "last_video_timestamp",
+              "value": "={{ $json.properties.last_video_automation.date.start }}",
+              "type": "string"
+            },
+            {
+              "id": "e09da1d3-563f-48be-bfec-7b275ecbf4a7",
+              "name": "influencer_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c2d5852f-7073-4b0a-a8fc-84310f00aaee",
+      "name": "기본정보설정",
+      "type": "n8n-nodes-base.set",
+      "position": [700, -320],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "NzJnZu5Z0BdRC7pr",
+          "mode": "list",
+          "cachedResultName": "경제 유튜브 Summarize 봇 실패처리"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [160, -540],
+      "id": "66a01bfd-ab8f-4c96-9fb1-efa29c4af7d9",
+      "name": "실패처리 함께 실행"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "86ab4b1f-952a-4133-8c63-ddc299317ab7",
+              "name": "fetch_timestamp",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7c34c204-eed1-4c91-bb9a-ddf3d8c2dc2e",
+      "name": "노드 실행 분리용",
+      "type": "n8n-nodes-base.set",
+      "position": [-80, -340],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "path": "dd0194fa-9295-472e-b9b0-eb76e92477f8",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-340, -540],
+      "id": "dc051f7a-f890-4581-9322-a14fb7ccfeec",
+      "name": "Webhook",
+      "webhookId": "dd0194fa-9295-472e-b9b0-eb76e92477f8"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1808306a-92ec-8077-a78b-c0c341442f6a",
+          "mode": "list",
+          "cachedResultName": "인플루언서 DB",
+          "cachedResultUrl": "https://www.notion.so/1808306a92ec8077a78bc0c341442f6a"
+        },
+        "simple": false,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Crawl|checkbox",
+              "condition": "equals",
+              "checkboxValue": true
+            },
+            {
+              "key": "활동 분야|multi_select",
+              "condition": "contains",
+              "multiSelectValue": "경제"
+            },
+            {
+              "key": "channel_name|rich_text",
+              "condition": "is_not_empty"
+            },
+            {
+              "key": "last_video_automation|date",
+              "condition": "on_or_before",
+              "date": "={{ new Date(Date.now() - (1000 * 60 * 10)).toISOString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [200, -340],
+      "id": "bee9e183-1553-48fd-a309-6713fff1dd17",
+      "name": "처리할 것 가져오기",
+      "credentials": {
+        "notionApi": {
+          "id": "9SbAj9OS0MQ0jszk",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [460, -340],
+      "id": "6f811b24-cceb-4894-860d-f3d3d00869bb",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C08AZQVBEV6",
+          "mode": "list",
+          "cachedResultName": "n8n"
+        },
+        "text": "=유튜브 크롤링 수행 완료! ({{ $('Loop Over Items').all().length }})개 채널에서 크롤링",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [1040, -580],
+      "id": "9ad5ef09-1424-4f5b-8241-5dccf4bc29c8",
+      "name": "Slack1",
+      "webhookId": "8060ac9d-4751-4e9c-85fe-57cad9247034",
+      "credentials": {
+        "slackApi": {
+          "id": "W3oCCE4rTXr67HAd",
+          "name": "슬랙 n8n 봇"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "filters": {
+          "channelId": "={{ $json.channel_id }}",
+          "publishedAfter": "={{ $json.last_video_timestamp }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [880, -320],
+      "id": "e89b0f1a-bd04-49cf-84e5-4e7742d722e6",
+      "name": "Get Recent Videos",
+      "alwaysOutputData": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "ZW3M6rj6G4o8p9Sm",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [1440, -280],
+      "id": "c2b73127-8a3e-40b7-8004-61c2a2f854ea",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1808306a-92ec-800f-9b8b-e2a5173b3ec0",
+          "mode": "list",
+          "cachedResultName": "경제 인플루언서 의견 DB",
+          "cachedResultUrl": "https://www.notion.so/1808306a92ec800f9b8be2a5173b3ec0"
+        },
+        "title": "={{ $json.snippet.title }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "경제 관련 인플루언서|relation",
+              "relationValue": [
+                "={{ $('기본정보설정').item.json.influencer_id }}"
+              ]
+            },
+            {
+              "key": "링크|url",
+              "urlValue": "=https://www.youtube.com/watch?v={{ $json.id.videoId }}"
+            },
+            {
+              "key": "Live |date",
+              "date": "={{ $json.snippet.publishTime }}"
+            },
+            {
+              "key": "automation_timestamp|date",
+              "date": "={{ new Date().toISOString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [1960, -80],
+      "id": "602120bb-53ea-430e-96d2-9caad10c0f1d",
+      "name": "페이지 생성",
+      "credentials": {
+        "notionApi": {
+          "id": "9SbAj9OS0MQ0jszk",
+          "name": "Notion account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('기본정보설정').item.json.notion_page_id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "last_video_automation|date",
+              "date": "={{ new Date().toISOString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [2220, -60],
+      "id": "979d33ee-bb3b-48f6-b100-ec923d3edf02",
+      "name": "채널 업데이트",
+      "credentials": {
+        "notionApi": {
+          "id": "9SbAj9OS0MQ0jszk",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "acca6396-b323-4ddd-8425-b34e40b102c3",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1660, -140],
+      "id": "3fd6ab3b-6f54-40e8-a4ca-24f8794daa37",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [780, -580],
+      "id": "7b07c28e-0fd2-44b7-85f4-8f24eaae3c8f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "content": "불필요한 알림으로 판단하여 슬랙 멈춤",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [840, -720],
+      "id": "827ef28c-219f-466b-99e6-6b625e33c9ab",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "snippet.publishedAt"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [1160, -320],
+      "id": "7aca1fee-0831-4cee-902f-44b9ff5b312c",
+      "name": "Sort"
+    }
+  ],
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-01-31T08:00:50.015+09:00",
+          "Readable date": "January 31st 2025, 8:00:50 am",
+          "Readable time": "8:00:50 am",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "January",
+          "Day of month": "31",
+          "Hour": "08",
+          "Minute": "00",
+          "Second": "50",
+          "Timezone": "Asia/Seoul (UTC+09:00)"
+        }
+      }
+    ],
+    "When clicking ‘Test workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "노드 실행 분리용",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "노드 실행 분리용",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "기본정보설정": {
+      "main": [
+        [
+          {
+            "node": "Get Recent Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "노드 실행 분리용": {
+      "main": [
+        [
+          {
+            "node": "처리할 것 가져오기",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "실패처리 함께 실행",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "노드 실행 분리용",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "처리할 것 가져오기": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "기본정보설정",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Recent Videos": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "채널 업데이트",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "페이지 생성": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "채널 업데이트": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "페이지 생성",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [[]]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bc829e53-af38-4896-b52c-ed9bed370e2d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "50ce0eb653c2082b250b9c944fc0ab23204d3168b5ed2e28d0846dc0c70fc29a"
+  },
+  "id": "TSO4pfIU7omZSP5E",
+  "tags": []
+}
