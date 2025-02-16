@@ -50,8 +50,8 @@
             },
             {
               "id": "55e503cb-071a-4452-81cf-20a6d6d1b920",
-              "name": "channel_name",
-              "value": "={{ $json.properties.channel_name.rich_text[0].text.content }}",
+              "name": "channel_id",
+              "value": "={{ $json.properties.channel_id.rich_text[0].text.content }}",
               "type": "string"
             },
             {
@@ -73,7 +73,7 @@
       "id": "c2d5852f-7073-4b0a-a8fc-84310f00aaee",
       "name": "기본정보설정",
       "type": "n8n-nodes-base.set",
-      "position": [700, -320],
+      "position": [740, -320],
       "typeVersion": 3.4
     },
     {
@@ -159,7 +159,7 @@
               "multiSelectValue": "경제"
             },
             {
-              "key": "channel_name|rich_text",
+              "key": "channel_id|rich_text",
               "condition": "is_not_empty"
             },
             {
@@ -189,7 +189,7 @@
       },
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
-      "position": [460, -340],
+      "position": [500, -340],
       "id": "6f811b24-cceb-4894-860d-f3d3d00869bb",
       "name": "Loop Over Items"
     },
@@ -231,7 +231,7 @@
       },
       "type": "n8n-nodes-base.youTube",
       "typeVersion": 1,
-      "position": [880, -320],
+      "position": [940, -320],
       "id": "e89b0f1a-bd04-49cf-84e5-4e7742d722e6",
       "name": "Get Recent Videos",
       "alwaysOutputData": true,
@@ -241,16 +241,6 @@
           "name": "YouTube account"
         }
       }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [1440, -280],
-      "id": "c2b73127-8a3e-40b7-8004-61c2a2f854ea",
-      "name": "Loop Over Items1"
     },
     {
       "parameters": {
@@ -289,7 +279,7 @@
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
-      "position": [1960, -80],
+      "position": [1760, -40],
       "id": "602120bb-53ea-430e-96d2-9caad10c0f1d",
       "name": "페이지 생성",
       "credentials": {
@@ -321,7 +311,7 @@
       },
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
-      "position": [2220, -60],
+      "position": [2720, 40],
       "id": "979d33ee-bb3b-48f6-b100-ec923d3edf02",
       "name": "채널 업데이트",
       "credentials": {
@@ -358,7 +348,7 @@
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [1660, -140],
+      "position": [2000, -480],
       "id": "3fd6ab3b-6f54-40e8-a4ca-24f8794daa37",
       "name": "If"
     },
@@ -393,13 +383,58 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "disableDotNotation": false
+        }
       },
       "type": "n8n-nodes-base.sort",
       "typeVersion": 1,
-      "position": [1160, -320],
+      "position": [1400, -240],
       "id": "7aca1fee-0831-4cee-902f-44b9ff5b312c",
       "name": "Sort"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": true
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [1900, -760],
+      "id": "c2b73127-8a3e-40b7-8004-61c2a2f854ea",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "acca6396-b323-4ddd-8425-b34e40b102c3",
+              "leftValue": "={{ $json.isEmpty() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1180, -320],
+      "id": "06eff71b-209a-40d8-8bc2-278ec7e81e39",
+      "name": "Empty YT Response"
     }
   ],
   "pinData": {
@@ -418,6 +453,11 @@
           "Second": "50",
           "Timezone": "Asia/Seoul (UTC+09:00)"
         }
+      }
+    ],
+    "When clicking 'Test workflow'": [
+      {
+        "json": {}
       }
     ],
     "When clicking ‘Test workflow’": [
@@ -520,25 +560,7 @@
       "main": [
         [
           {
-            "node": "Sort",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Items1": {
-      "main": [
-        [
-          {
-            "node": "채널 업데이트",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "If",
+            "node": "Empty YT Response",
             "type": "main",
             "index": 0
           }
@@ -549,7 +571,7 @@
       "main": [
         [
           {
-            "node": "Loop Over Items1",
+            "node": "채널 업데이트",
             "type": "main",
             "index": 0
           }
@@ -576,13 +598,7 @@
             "index": 0
           }
         ],
-        [
-          {
-            "node": "페이지 생성",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Aggregate": {
@@ -592,7 +608,37 @@
       "main": [
         [
           {
-            "node": "Loop Over Items1",
+            "node": "페이지 생성",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "채널 업데이트",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Empty YT Response": {
+      "main": [
+        [
+          {
+            "node": "채널 업데이트",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sort",
             "type": "main",
             "index": 0
           }
@@ -600,11 +646,11 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "bc829e53-af38-4896-b52c-ed9bed370e2d",
+  "versionId": "09b972ca-1835-4939-9e70-3b862a15b314",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "50ce0eb653c2082b250b9c944fc0ab23204d3168b5ed2e28d0846dc0c70fc29a"
