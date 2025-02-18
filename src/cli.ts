@@ -5,6 +5,7 @@ import { registerInitCommand } from './commands/init'
 import { registerPpCommand } from './commands/pp'
 import { registerPrCommand } from './commands/pr'
 import { registerSyncCommand } from './commands/sync'
+import { dockerCommand } from './commands/docker'
 
 const program = new Command()
 
@@ -18,5 +19,6 @@ registerPpCommand(program)
 registerFeatCommand(program)
 registerInitCommand(program)
 registerSyncCommand(program)
+program.addCommand(dockerCommand)
 
 program.parse()

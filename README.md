@@ -36,6 +36,29 @@ st pp         # Pull & Prune. Sync remote and delete local branches that no long
 st feat       # Create new feature branch and prepare next AI-enhanced workflow.
 ```
 
+### Docker management
+
+```bash
+st docker clean   # 사용하지 않는 도커 이미지 정리
+st docker config  # 도커 이미지 보존 설정 관리
+```
+
+도커 이미지 정리 기능은 다음과 같이 동작합니다:
+
+1. 보존할 이미지 패턴과 일치하는 이미지는 모든 버전을 유지
+2. 일치하지 않는 이미지는 레포지토리별로 최신 버전만 유지하고 나머지는 삭제
+3. 삭제 전에 전체 이미지 개수, 보존할 이미지, 삭제할 이미지 목록을 보여주고 확인
+
+설정은 `stitch.yaml` 파일에서 관리됩니다:
+
+```yaml
+docker:
+  keepImages:
+    - mysql
+    - postgres
+    - supabase
+```
+
 ### Cursor IDE context management
 
 TODO
