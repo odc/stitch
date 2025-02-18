@@ -25,4 +25,7 @@ export interface StitchConfig {
     repository: string
   }
   components: KBComponent[]
+  docker?: {
+    keepImages: string[]
+  }
 }
