@@ -26,7 +26,7 @@ export async function generatePRDescription(
       : `Based on the full content of these commits, please generate a PR title and description:\n\n${commitMessages}`
 
   const requestData = {
-    model: 'claude-3-sonnet-20240229',
+    model: 'claude-sonnet-4-20250514',
     max_tokens: 1000,
     system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
