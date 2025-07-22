@@ -1,6 +1,6 @@
 {
   "name": "@odcode/stitch",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Seamlessly connecting the small gaps in your development workflow with AI",
   "main": "dist/index.js",
   "bin": {
