@@ -22,8 +22,8 @@ export async function generatePRDescription(
 
   const userPrompt =
     language === 'ko'
-      ? `다음 커밋들의 전체 내용을 바탕으로 PR의 제목과 설명을 생성해주세요:\n\n${commitMessages}`
-      : `Based on the full content of these commits, please generate a PR title and description:\n\n${commitMessages}`
+      ? `다음 커밋들의 전체 내용을 바탕으로 PR의 제목과 설명을 생성해주세요. 단, 이 내용들이 하나의 PR 에 담길 것이므로 각각의 커밋을 요약하는 방식이 아닌, 전체를 하나의 변경으로 보고 내용을 작성하세요 :\n\n${commitMessages}`
+      : `Based on the full content of these commits, please generate a PR title and description. Please write the content as a single change, not as a summary of each commit:\n\n${commitMessages}`
 
   const requestData = {
     model: 'claude-sonnet-4-20250514',
